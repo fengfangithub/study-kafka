@@ -10,10 +10,14 @@ spring:
       batch-size: 16384
       buffer-memory: 33554432
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: com.fengfan.kafkbasis.config.MySerializer
       properties:
         linger:
           ms: 0
+        #自定义分区器
+        partitioner:
+          class: com.fengfan.kafkbasis.config.MyKafkaPartitioner
 mq:
   kafka:
     topic: topic

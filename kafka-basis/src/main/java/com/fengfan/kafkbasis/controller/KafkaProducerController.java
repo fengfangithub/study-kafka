@@ -1,5 +1,6 @@
 package com.fengfan.kafkbasis.controller;
 
+import com.fengfan.kafkbasis.entity.KafkaMessageEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -48,7 +50,20 @@ public class KafkaProducerController {
         //获取发送结果，会一直等待，指导达到设置的超时时间
         SendResult<String, Object> result = future.get(3, TimeUnit.SECONDS);
         logger.info("发送成功----内容：" + result.getProducerRecord().value() + "，topic："
-                + result.getRecordMetadata().topic() + "，artition：" + result.getRecordMetadata().partition());
+                + result.getRecordMetadata().topic() + "，partition：" + result.getRecordMetadata().partition());
+    }
+
+    /**
+     * 自定义序列化发送
+     *
+     * @param message
+     */
+    @PostMapping("/sendSerializerMessage")
+    public void sendSerializercMessage(String message) {
+        KafkaMessageEntity<String> kafkaMessageEntity = new KafkaMessageEntity<>();
+        kafkaMessageEntity.setData(message);
+        kafkaMessageEntity.setId(UUID.randomUUID().toString());
+        kafkaTemplate.send("topic", kafkaMessageEntity);
     }
 
 }
