@@ -3,6 +3,14 @@ server:
 spring:
   kafka:
     bootstrap-servers: 192.168.159.135:9092
+    # 消费者
+    consumer:
+      group-id: defaul_group
+      enable-auto-commit: true
+      auto-commit-interval: 100
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     # 生产者
     producer:
       acks: 1
@@ -10,8 +18,8 @@ spring:
       batch-size: 16384
       buffer-memory: 33554432
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: com.fengfan.kafkbasis.config.MySerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: com.fengfan.kafkbasis.config.MySerializer
       properties:
         linger:
           ms: 0

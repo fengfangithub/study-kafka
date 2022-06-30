@@ -1,5 +1,7 @@
 package com.fengfan.kafkbasis.config;
 
+import org.apache.kafka.clients.admin.NewTopic;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.support.ProducerListener;
@@ -11,6 +13,21 @@ import org.springframework.kafka.support.ProducerListener;
  */
 @Configuration
 public class KafkaConfiguration {
+
+    //名称
+    @Value("${mq.kafka.topic}")
+    private String topic;
+    //分区数
+    @Value("${mq.kafka.partition}")
+    private Integer partition;
+    //副本数
+    @Value("${mq.kafka.replica}")
+    private short replica;
+
+    @Bean
+    public NewTopic initialTopic() {
+        return new NewTopic(topic, partition, replica);
+    }
 
     /**
      * 配置producerListener
